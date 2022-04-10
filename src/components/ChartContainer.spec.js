@@ -1,7 +1,6 @@
 import ChartContainer from './ChartContainer';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 describe('ChartContainer', () => {
     const unmockedFetch = global.fetch;
@@ -136,14 +135,12 @@ describe('ChartContainer', () => {
     it('does not show a chart if no data is available', () => {
         render(<ChartContainer />);
         expect(
-            screen.queryByText('Enter a stock symbol to get started')
+            screen.getByText('Enter a stock symbol to get started')
         ).toBeTruthy();
     });
 
     it('only makes a request after at least 3 characters are entered in the searchbar', async () => {
-        await act(async () => {
-            render(<ChartContainer />);
-        });
+        render(<ChartContainer />);
 
         const searchBar = screen.getByTestId('searchbar');
         userEvent.type(searchBar, 'IB');
@@ -154,9 +151,7 @@ describe('ChartContainer', () => {
     });
 
     it('it makes a request for a specific stock once the dropdown is clicked', async () => {
-        await act(async () => {
-            render(<ChartContainer />);
-        });
+        render(<ChartContainer />);
 
         const searchBar = screen.getByTestId('searchbar');
         userEvent.type(searchBar, 'IBM');
